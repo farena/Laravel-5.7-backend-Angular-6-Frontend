@@ -25,24 +25,34 @@
             Laravel development server started: <http://127.0.0.1:8000>
 
     ### For Apache Development Server
+    - Create Apache Virtual Host
     
-        cd /etc/apache2/sites-available/
-        touch "myProject.conf"
-        nano "myProject.conf"
-        
-        
-        # Inside myProject.conf
-            <VirtualHost *:80>
-                ServerName myproject.test
+            cd /etc/apache2/sites-available/
+            touch "myProject.conf"
+            nano "myProject.conf"
+                    
+                ## Inside myProject.conf
+                <VirtualHost *:80>
+                    ServerName myproject.test
+                
+                    ServerAdmin webmaster@localhost
+                    DocumentRoot /home/path/to/myproject/public
+                
+                    <Directory />
+                        AllowOverride All
+                        Require all granted
+                    </Directory>
+                
+                    ErrorLog ${APACHE_LOG_DIR}/myproject_error.log
+                    CustomLog ${APACHE_LOG_DIR}/myproject_access.log combined
+                </VirtualHost>
+
+    - Register Local Host Domain
+    
+            sudo -i
+            echo -e "127.0.0.1 myproject.test" >> /etc/hosts
+            exit
             
-                ServerAdmin webmaster@localhost
-                DocumentRoot /home/path/to/myproject/public
-            
-                <Directory />
-                    AllowOverride All
-                    Require all granted
-                </Directory>
-            
-                ErrorLog ${APACHE_LOG_DIR}/myproject_error.log
-                CustomLog ${APACHE_LOG_DIR}/myproject_access.log combined
-            </VirtualHost>
+    - And restart apache
+    
+            sudo service apache2 restart
